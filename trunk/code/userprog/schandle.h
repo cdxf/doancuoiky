@@ -2,6 +2,7 @@
 #define SCHADLE_H
 
 #include "system.h"
+//#include "machine.h"
 #include "../userprog/syscall.h"
 
 char* User2System(int virtAddr,int maxfilelen);

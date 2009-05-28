@@ -15,7 +15,7 @@ char* User2System(int virtAddr,int limit)
     int oneChar;
     char* kernelBuf = NULL;
 
-    kernelBuf = new char[limit +1];//need for terminal string
+    kernelBuf = new char[limit +1];//need one character for terminal string
     if (kernelBuf == NULL)
     {
        return kernelBuf;
@@ -26,10 +26,10 @@ char* User2System(int virtAddr,int limit)
     //printf("\n Filename u2s:");
     for (i = 0 ; i < limit ;i++)
     {
-      machine->ReadMem(virtAddr+i,1,&oneChar);
+      machine->ReadMem(virtAddr+i, 1, &oneChar);
       kernelBuf[i] = (char)oneChar;
       //printf("%c",kernelBuf[i]);
-      if (oneChar == 0)
+      if (oneChar == '\0')
       {
 	        break;
       }
@@ -73,6 +73,21 @@ output :       -1 : error
 */
 void doSC_Exec()
 {
+	int virtAdd = machine->ReadRegister(4);
+	char *FileName = User2System(virtAdd, MaxFileLength + 1);
+	OpenFile *ob = fileSystem->Open(FileName);
+
+	if (ob == NULL)
+	{
+		printf("Khong mo duoc file %s\n", FileName);
+		machine->WriteRegister(2, -1);
+		return;
+	}
+
+	delete ob;
+
+	int pID = pTab->ExecUpdate(FileName);
+	machine->WriteRegister(2, pID);
 }
 
 /*

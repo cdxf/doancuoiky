@@ -18,6 +18,7 @@ Interrupt *interrupt;			// interrupt status
 Statistics *stats;			// performance metrics
 Timer *timer;				// the hardware timer device,
 					// for invoking context switches
+PTable *pTab;				// quan ly thong tin cac tien trinh
 
 #ifdef FILESYS_NEEDED
 FileSystem  *fileSystem;

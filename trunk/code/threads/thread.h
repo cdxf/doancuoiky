@@ -102,6 +102,9 @@ class Thread {
     char* getName() { return (name); }
     void Print() { printf("%s, ", name); }
 
+    // Cac thuoc tinh va phuong thuc khai bao them
+    int processID;	//ID cua tien trinh, khi da chuong
+
   private:
     // some of the private data for this class is listed above
     
