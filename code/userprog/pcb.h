@@ -14,7 +14,7 @@ class PCB
 		int exitcode;
 		int numwait;
 
-		char FileName[32];
+		//char FileName[32];
 
 		Thread* thread;
 		int pid;
@@ -43,8 +43,8 @@ class PCB
 		void SetExitCode(int ec);
 		int  GetExitCode();
 
-		void SetFileName(char* fn);
-		char* GetFileName();
+		//void SetFileName(char* fn);
+		//char* GetFileName();
 
 };
 

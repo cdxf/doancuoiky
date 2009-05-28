@@ -1,12 +1,13 @@
-#include "ptable.h"
 #include "system.h"
+#include "ptable.h"
 
-PTable::PTable(int size){
+PTable::PTable(int size)
+{
   
   if (size > MAXPROCESS)
     size = MAXPROCESS;
 
-  bm = new BitMap(size );
+  bm = new BitMap(size);
   ASSERT(bm != NULL);
 
   //do not use index 0
@@ -16,7 +17,7 @@ PTable::PTable(int size){
   for (int i = 0; i < psize ; i++)
     pcb[i] = NULL;
  
-  bmsem = new Semaphore("bitmapAccess",1);
+  bmsem = new Semaphore("bitmapSemaphore",1);
 }
 
 PTable::~PTable()
@@ -27,6 +28,7 @@ PTable::~PTable()
         {
           delete pcb[i];
           pcb[i] = NULL;
+	  bm->Clear(i);
         }
     }
   delete bm;
@@ -34,17 +36,12 @@ PTable::~PTable()
   delete bmsem;
 }
 
-int PTable::ExecUpdate()
+int PTable::ExecUpdate(char *filename)
 {
-  // Read process name
-  int virtAddr = machine->ReadRegister(4);
-
-  char *filename = User2System(virtAddr,MaxFileLength+1);
-
   if (filename == NULL)
     {
-      printf("\n Not enough memory in system");
-      DEBUG('f',"\n Not enough memory in system");
+      printf("\n System memory error");
+      DEBUG(dbgFile,"\n Not enough memory in system");
       delete filename;
       return -1;
     }
@@ -56,12 +53,12 @@ int PTable::ExecUpdate()
   if (strlen(filename) == 0 || (strlen(filename) >= MaxFileLength+1))
     {
       printf("\n Too many characters in filename: %s",filename);
-      DEBUG('f',"\n Too many characters in filename");
+      DEBUG(dbgFile,"\n Too many characters in filename");
       delete filename;
       return -1;
     }
 
-  //Check filename exist or not
+  //Check program filename exist or not
   OpenFile* executable = fileSystem->Open(filename);
 
   if (executable == NULL)
@@ -89,7 +86,8 @@ int PTable::ExecUpdate()
   int pid = bm->Find();
   bmsem->V();
 
-  if (pid == -1){// no empty slot
+  if (pid == -1)
+  {// no empty slot
     printf("\nPTableError:: No empty slot.");
     return -1;
   }
@@ -102,8 +100,6 @@ int PTable::ExecUpdate()
 
   int rs = pcb[pid]->Exec(filename,pid);
   
-  //  delete filename;
-
   if (rs == -1)// error
     pid = -1;
 
@@ -129,7 +125,8 @@ int PTable::ExitUpdate(int exitcode)
   pcb[pid]->SetExitCode(exitcode);
 
   printf("\nPtable: wait for %d proceses exit",pcb[pid]->GetNumWait());
-  while(pcb[pid]->GetNumWait()>0){
+  while(pcb[pid]->GetNumWait()>0)
+  {
     pcb[pid]->JoinRelease();
     pcb[pid]->ExitWait();
     pcb[pid]->DecNumWait();
@@ -201,10 +198,10 @@ int PTable::GetFreeSlot(){
   bmsem->V();
 }
 
-int PTable::GetMax()
+/*int PTable::GetMax()
 {
   return psize;
-}
+}*/
 
 bool PTable::IsExist(int pid){
   if (pid < 0 || pid > MAXPROCESS)

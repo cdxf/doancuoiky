@@ -15,7 +15,7 @@ PCB::PCB()
 	this->numwait = 0;
 	this->exitcode = 0;
 	this->thread = NULL;
-	this->boolBG = 0;
+	//this->boolBG = 0;
 	this->joinsem = new Semaphore("joinsem",0);
 	this->exitsem = new Semaphore("exitsem",0);
 	this->multex = new Semaphore("multex",1);
@@ -28,7 +28,7 @@ PCB::PCB(int id)
 	this->numwait = 0;
 	this->exitcode = 0;
 	this->thread = NULL;
-	this->boolBG = 0;
+	//this->boolBG = 0;
 	this->joinsem = new Semaphore("joinsem",0);
 	this->exitsem = new Semaphore("exitsem",0);
 	this->multex = new Semaphore("multex",1);
@@ -115,7 +115,7 @@ void PCB::DecNumWait()
 
 //////////////////////////////////////////////////////////////////////////
 
-void PCB::SetFileName(char* fn)
+/*void PCB::SetFileName(char* fn)
 {
 	strcpy(FileName,fn);
 }
@@ -123,7 +123,7 @@ void PCB::SetFileName(char* fn)
 char* PCB::GetFileName()
 {
 	return FileName;
-}
+}*/
 
 //////////////////////////////////////////////////////////////////////////
 
