@@ -62,6 +62,12 @@ Thread::~Thread()
     ASSERT(this != currentThread);
     if (stack != NULL)
 	DeallocBoundedArray((char *) stack, StackSize * sizeof(int));
+#ifdef USER_PROGRAM
+    if (space != NULL)
+    {
+	delete space;
+    }
+#endif
 }
 
 //----------------------------------------------------------------------
@@ -93,7 +99,7 @@ Thread::Fork(VoidFunctionPtr func, int arg)
     StackAllocate(func, arg);
 
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
-    scheduler->ReadyToRun(this);	// ReadyToRun assumes that interrupts 
+    scheduler->ReadyToRun(this);	// ReadyToRun assumes that interrupts
 					// are disabled!
     (void) interrupt->SetLevel(oldLevel);
 }    

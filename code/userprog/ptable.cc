@@ -44,7 +44,7 @@ int PTable::ExecUpdate()
   if (filename == NULL)
     {
       printf("\n Not enough memory in system");
-      DEBUG(dbgFile,"\n Not enough memory in system");
+      DEBUG('f',"\n Not enough memory in system");
       delete filename;
       return -1;
     }
@@ -56,27 +56,28 @@ int PTable::ExecUpdate()
   if (strlen(filename) == 0 || (strlen(filename) >= MaxFileLength+1))
     {
       printf("\n Too many characters in filename: %s",filename);
-      DEBUG(dbgFile,"\n Too many characters in filename");
+      DEBUG('f',"\n Too many characters in filename");
       delete filename;
       return -1;
     }
 
-  //Check filename exist
+  //Check filename exist or not
   OpenFile* executable = fileSystem->Open(filename);
 
-  if (executable == NULL){
+  if (executable == NULL)
+  {
     printf("\nPtable::Error opening file:  %s",filename);
-    DEBUG(dbgFile,"\n Error opening file.");
+    DEBUG('f',"\n Error opening file.");
     delete filename;
     return -1;
   }
 
   delete executable;
 
-  //Check if call itself
-  //  printf("\n current pro '%s'",currentThread->getName());
-  
-  if (strcmp(currentThread->getName(),filename) == 0){
+  // Check if call itself
+  // printf("\n current pro '%s'",currentThread->getName());
+  if (strcmp(currentThread->getName(),filename) == 0)
+  {
     printf("\nPTable:Error do NOT support a process execute itself");
     delete filename;
     return -1;
@@ -85,7 +86,7 @@ int PTable::ExecUpdate()
 
   // Find free slot on ptable
   bmsem->P();
-  int pid = bm->FindAndSet();
+  int pid = bm->Find();
   bmsem->V();
 
   if (pid == -1){// no empty slot
@@ -152,8 +153,8 @@ int PTable::JoinUpdate(int pid)
     interrupt->SetLevel(oldLevel);
     return -1;
   }
-
-  gmutex->P();
+  // Cho nay tam thoi xet sau
+  //gmutex->P();
   //
   if(pcb[pid] == NULL){//not enough main memory 
     interrupt->SetLevel(oldLevel);
@@ -206,7 +207,7 @@ int PTable::GetMax()
 }
 
 bool PTable::IsExist(int pid){
-  if (pid < 0 || pid > bm->Size())
+  if (pid < 0 || pid > MAXPROCESS)
     return false;
   return bm->Test(pid);
 }
@@ -217,7 +218,10 @@ void PTable::Remove(int pid){
   //printf("\nR1");
   bm->Clear(pid);
   //printf("\nR2");
-  delete pcb[pid];
+  if (pcb[pid] != NULL)
+  {
+      delete pcb[pid];
+  }
   //printf("\nR3");
   pcb[pid] = NULL;
   bmsem->V();
