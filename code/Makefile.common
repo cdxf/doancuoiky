@@ -79,7 +79,14 @@ USERPROG_H = ../userprog/addrspace.h\
 	../threads/synchcons.h\
 	../userprog/pcb.h\
 	../userprog/ptable.h\
-	../userprog/schandle.h
+	../userprog/schandle.h\
+  	../userprog/fdtable.h\
+  	../userprog/fdbase.h\
+  	../userprog/fdro.h\
+  	../userprog/fdrw.h\
+  	../userprog/fdcin.h\
+  	../userprog/fdcout.h\
+    ../userprog/stable.h
 
 USERPROG_C = ../userprog/addrspace.cc\
 	../userprog/bitmap.cc\
@@ -92,10 +99,17 @@ USERPROG_C = ../userprog/addrspace.cc\
 	../threads/synchcons.cc\
 	../userprog/ptable.cc\
 	../userprog/pcb.cc\
-	../userprog/schandle.cc
+	../userprog/schandle.cc\
+  	../userprog/fdtable.cc\
+  	../userprog/fdbase.cc\
+  	../userprog/fdro.cc\
+  	../userprog/fdrw.cc\
+  	../userprog/fdcin.cc\
+  	../userprog/fdcout.cc\
+    ../userprog/stable.cc
 
 USERPROG_O = addrspace.o bitmap.o exception.o progtest.o console.o machine.o \
-	mipssim.o translate.o synchcons.o ptable.o pcb.o schandle.o
+	mipssim.o translate.o synchcons.o ptable.o pcb.o schandle.o fdtable.o fdbase.o fdro.o fdrw.o fdcin.o fdcout.o stable.o
 
 VM_H = 
 VM_C = 

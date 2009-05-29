@@ -29,6 +29,12 @@
 #define SC_Close	8
 #define SC_Fork		9
 #define SC_Yield	10
+#define SC_CreateFile		11
+#define SC_CreateSemaphore  12
+#define SC_Wait		13
+#define SC_Signal	14
+
+#define MaxFileLength 31
 
 #ifndef IN_ASM
 
@@ -124,6 +130,10 @@ void Fork(void (*func)());
  */
 void Yield();		
 
+int CreateFile(char *filename);
+int CreateSemaphore(char* name,int semval);
+int wait(char* name);
+int signal(char* name);
 
 #endif /* IN_ASM */
 

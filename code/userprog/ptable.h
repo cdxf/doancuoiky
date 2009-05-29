@@ -20,10 +20,11 @@ class PTable
   int ExecUpdate(char *filename);// return PID
   int ExitUpdate(int ec);
   int JoinUpdate(int id);
-  int GetFreeSlot();
+  int FindFreeSlot();
   bool IsExist(int pid);
   //int GetMax();
   void Remove(int pid);
+  char* GetFileName(int pid);
 };
 
 #endif

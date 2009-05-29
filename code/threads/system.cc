@@ -19,6 +19,10 @@ Statistics *stats;			// performance metrics
 Timer *timer;				// the hardware timer device,
 					// for invoking context switches
 PTable *pTab;				// quan ly thong tin cac tien trinh
+BitMap *gPhysPageBitMap;		// quan ly cac trang vat ly
+Semaphore *addrSem;			// semaphore dung khi cap phat vung nho
+SynchConsole *gSynchConsole;
+STable *sTab;
 
 #ifdef FILESYS_NEEDED
 FileSystem  *fileSystem;

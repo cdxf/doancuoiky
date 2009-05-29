@@ -31,6 +31,24 @@ class OpenFile {
     OpenFile(int f) { file = f; currentOffset = 0; }	// open the file
     ~OpenFile() { Close(file); }			// close the file
 
+     int Seek(int pos)
+        {
+	      int curpos = 0;
+        if (pos == -1)
+                {
+                Lseek(file,0,SEEK_END);
+                currentOffset = Tell(file);
+                curpos =  Tell(file);
+                }
+        else
+                {
+                Lseek(file,pos,0);
+                currentOffset = Tell(file);
+                curpos = Tell(file);
+                }
+	      return curpos;
+        }
+        
     int ReadAt(char *into, int numBytes, int position) { 
     		Lseek(file, position, 0); 
 		return ReadPartial(file, into, numBytes); 
@@ -67,7 +85,7 @@ class OpenFile {
 					// at "sector" on the disk
     ~OpenFile();			// Close the file
 
-    void Seek(int position); 		// Set the position from which to 
+    int Seek(int pos); 		// Set the position from which to 
 					// start reading/writing -- UNIX lseek
 
     int Read(char *into, int numBytes); // Read/write bytes from the file,

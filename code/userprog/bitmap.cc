@@ -163,3 +163,12 @@ BitMap::WriteBack(OpenFile *file)
 {
    file->WriteAt((char *)map, numWords * sizeof(unsigned), 0);
 }
+
+//--------------------------------------------------------
+// BitMap::Size
+//	Tra ve so bit cua bitmap
+//--------------------------------------------------------
+int BitMap::Size()
+{
+    return numBits;
+}
