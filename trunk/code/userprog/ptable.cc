@@ -1,5 +1,6 @@
 #include "system.h"
 #include "ptable.h"
+#include "syscall.h"
 
 PTable::PTable(int size)
 {
@@ -118,7 +119,7 @@ int PTable::ExitUpdate(int exitcode)
   }
 
   //
-  if(pid == 0)// the very parent process.
+  if(pid == 0)
     return 0;
 
   // printf("\nPTable:ExitUpdate exit process id %d",pid);
@@ -150,7 +151,7 @@ int PTable::JoinUpdate(int pid)
     interrupt->SetLevel(oldLevel);
     return -1;
   }
-  // Cho nay tam thoi xet sau
+  //
   //gmutex->P();
   //
   if(pcb[pid] == NULL){//not enough main memory 
@@ -165,7 +166,7 @@ int PTable::JoinUpdate(int pid)
   }
   
   //debug
-  //printf("\nBegin Join p%d",pid);
+  printf("\nBegin Join p%d",pid);
 
   bmsem->P();
   pcb[pid]->IncNumWait();
@@ -183,16 +184,16 @@ int PTable::JoinUpdate(int pid)
   pcb[pid]->ExitRelease();
   bmsem->V();
 
-  //printf("\nF ExitRelease");
+  printf("\nF ExitRelease");
   interrupt->SetLevel(oldLevel);
 
   //debug
-  //printf("\nFinish Join p%d",pid);
+  printf("\nFinish Join p%d",pid);
 
   return (exitcode);
 }
 
-int PTable::GetFreeSlot(){
+int PTable::FindFreeSlot(){
   bmsem->P();
   return (bm->Find());
   bmsem->V();
@@ -222,4 +223,9 @@ void PTable::Remove(int pid){
   //printf("\nR3");
   pcb[pid] = NULL;
   bmsem->V();
+}
+
+char* PTable::GetFileName(int pid)
+{
+  return pcb[pid]->GetFileName();
 }

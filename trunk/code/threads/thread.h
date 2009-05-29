@@ -43,6 +43,7 @@
 #ifdef USER_PROGRAM
 #include "machine.h"
 #include "addrspace.h"
+#include "fdtable.h"
 #endif
 
 // CPU register state to be saved on context switch.  
@@ -104,6 +105,7 @@ class Thread {
 
     // Cac thuoc tinh va phuong thuc khai bao them
     int processID;	//ID cua tien trinh, khi da chuong
+    FDTable *fTab;
 
   private:
     // some of the private data for this class is listed above
@@ -130,6 +132,13 @@ class Thread {
     void RestoreUserState();		// restore user-level register state
 
     AddrSpace *space;			// User code this thread is running.
+    void FreeSpace()
+    {
+       if (space != NULL)
+       {
+         delete space;
+       }
+    }
 #endif
 };
 

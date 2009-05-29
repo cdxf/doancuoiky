@@ -82,38 +82,6 @@ Create:
 	j	$31
 	.end Create
 
-	.globl Open
-	.ent	Open
-Open:
-	addiu $2,$0,SC_Open
-	syscall
-	j	$31
-	.end Open
-
-	.globl Read
-	.ent	Read
-Read:
-	addiu $2,$0,SC_Read
-	syscall
-	j	$31
-	.end Read
-
-	.globl Write
-	.ent	Write
-Write:
-	addiu $2,$0,SC_Write
-	syscall
-	j	$31
-	.end Write
-
-	.globl Close
-	.ent	Close
-Close:
-	addiu $2,$0,SC_Close
-	syscall
-	j	$31
-	.end Close
-
 	.globl Fork
 	.ent	Fork
 Fork:
@@ -130,6 +98,70 @@ Yield:
 	j	$31
 	.end Yield
 
+//---------------------------------------------------------------
+	.ent	CreateFile
+CreateFile:
+	addiu $2,$0,SC_CreateFile
+	syscall
+	j	$31
+	.end CreateFile
+//---------------------------------------------------------------
+	.globl Open
+	.ent	Open
+Open:
+	addiu $2,$0,SC_Open
+	syscall
+	j	$31
+	.end Open
+//---------------------------------------------------------------
+	.globl Read
+	.ent	Read
+Read:
+	addiu $2,$0,SC_Read
+	syscall
+	j	$31
+	.end Read
+//---------------------------------------------------------------
+	.globl Write
+	.ent	Write
+Write:
+	addiu $2,$0,SC_Write
+	syscall
+	j	$31
+	.end Write
+//---------------------------------------------------------------
+	.globl Close
+	.ent	Close
+Close:
+	addiu $2,$0,SC_Close
+	syscall
+	j	$31
+	.end Close
+//---------------------------------------------------------------
+	.globl CreateSemaphore
+	.ent	CreateSemaphore
+CreateSemaphore:
+	addiu $2,$0,SC_CreateSemaphore
+	syscall
+	j	$31
+	.end CreateSemaphore
+//---------------------------------------------------------------
+	.globl wait
+	.ent	wait
+wait:
+	addiu $2,$0,SC_Wait
+	syscall
+	j	$31
+	.end wait
+//---------------------------------------------------------------
+	.globl signal
+	.ent	signal
+signal:
+	addiu $2,$0,SC_Signal
+	syscall
+	j	$31
+	.end signal
+    
 /* dummy function to keep gcc happy */
         .globl  __main
         .ent    __main

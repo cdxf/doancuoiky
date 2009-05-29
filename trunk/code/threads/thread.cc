@@ -39,6 +39,7 @@ Thread::Thread(char* threadName)
     stack = NULL;
     status = JUST_CREATED;
     processID = 0;
+    fTab = new FDTable(MAX);
 #ifdef USER_PROGRAM
     space = NULL;
 #endif
@@ -103,6 +104,10 @@ Thread::Fork(VoidFunctionPtr func, int arg)
     scheduler->ReadyToRun(this);	// ReadyToRun assumes that interrupts
 					// are disabled!
     (void) interrupt->SetLevel(oldLevel);
+    if (fTab != NULL)
+    {
+      delete fTab;      
+    }
 }    
 
 //----------------------------------------------------------------------

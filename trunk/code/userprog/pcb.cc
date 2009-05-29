@@ -5,7 +5,7 @@
 #include "thread.h"
 #include "addrspace.h"
 
-extern void StartProcess_2(int id);
+extern void StartProcess_ID(int pID);
 
 //constuctor
 PCB::PCB()
@@ -115,7 +115,7 @@ void PCB::DecNumWait()
 
 //////////////////////////////////////////////////////////////////////////
 
-/*void PCB::SetFileName(char* fn)
+void PCB::SetFileName(char* fn)
 {
 	strcpy(FileName,fn);
 }
@@ -123,12 +123,12 @@ void PCB::DecNumWait()
 char* PCB::GetFileName()
 {
 	return FileName;
-}*/
+}
 
 //////////////////////////////////////////////////////////////////////////
 
 //nap chuong trinh co ten luu trong bien file name va ProcessID la id
-int PCB::Exec(char* filename,int id)
+int PCB::Exec(char* filename, int id)
 {
 	multex->P();
 
@@ -143,7 +143,8 @@ int PCB::Exec(char* filename,int id)
 	this->thread->processID = id;
 	this->parentID = currentThread->processID;
 
-	//this->thread->Fork(StartProcess_2,id);
+	this->thread->Fork(StartProcess_ID, id);
+	this->SetFileName(filename);
 
 	multex->V();
 

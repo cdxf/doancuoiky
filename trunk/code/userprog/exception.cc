@@ -24,6 +24,7 @@
 #include "copyright.h"
 #include "system.h"
 #include "syscall.h"
+#include "schandle.h"
 
 //----------------------------------------------------------------------
 // ExceptionHandler
@@ -52,7 +53,6 @@ void
 ExceptionHandler(ExceptionType which)
 {
    	int type = machine->ReadRegister(2);
-   	int op1, op2, result;
 	switch(which)
 	{
 	case NoException: printf("NoException\n");
@@ -77,9 +77,63 @@ ExceptionHandler(ExceptionType which)
 		case SC_Halt:
 			DEBUG('a', "Shutdown, initiated by user program.\n");
    			interrupt->Halt();
-  		default:
+      		
+    case SC_Open:
+      DEBUG('f', "Open a file.\n");
+	    doSC_Open();
+	    break;
+
+    case SC_Close:
+      DEBUG('f', "Close the file.\n");
+	    doSC_Close();
+	    break;
+
+    case SC_Read:
+      DEBUG('f', "Read from file or console input.\n");
+	    doSC_Read();
+	    break;
+
+    case SC_Write:
+      DEBUG('f', "Write to memory or console output.\n");
+	    doSC_Write();
+	    break;
+
+    case SC_CreateFile:
+      DEBUG('f', "Create a new file.\n");
+	    doSC_CreateFile();
+	    break;
+    
+    case SC_Exec:
+			DEBUG('a', "Execute program.\n");
+			doSC_Exec();
+      machine->WriteRegister(PCReg, machine->ReadRegister(PCReg) + 4);
+			break;
+    case SC_Join:
+      DEBUG('a', "Join to parent process.\n");
+      doSC_Join();
+      machine->WriteRegister(PCReg, machine->ReadRegister(PCReg) + 4);
+			break;
+
+    case SC_Exit:
+	    DEBUG('a', "\n SC_Exit, initiated by user program.!");
+	    doSC_Exit();
+	    break;
+
+   case SC_CreateSemaphore :
+	    doSC_CreateSemaphore();
+	    break;
+      
+   case SC_Signal:
+	    doSC_Signal();
+	    break;
+      
+   case SC_Wait:
+	    doSC_Wait();
+    	break;
+
+    	default:
 			printf("Unexpected user mode exception %d %d\n", which, type);
 			ASSERT(FALSE);
-  		 }
+  	}
 	}
 }

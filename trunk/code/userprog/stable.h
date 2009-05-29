@@ -1,5 +1,4 @@
 //stable.h
-
 #ifndef STABLE_H
 #define STABLE_H
 
@@ -8,33 +7,56 @@
 
 #define MAX_SEMAPHORE 10
 
-class Sem{
-  char name[50];
-  Semaphore *sem;
+class Sem
+{
+	private:
+		char name[50];
+		Semaphore *sem;
+	public :
+		Sem(char* na,int i)
+		{
+			strcpy(this->name,na);
+			sem = new Semaphore(name,i);
+		}
 
- public:
-  Sem(char* na,int i){
-    strcpy(this->name,na);
-    sem = new Semaphore(name,i);
-  }
-  ~Sem(){delete sem;}
-  void wait(){sem->P();}
-  void signal(){sem->V();}
-  char* GetName(){return name;}
-}; 
+		~Sem()
+		{
+			delete sem;
+		}
 
-class STable {
+		void wait()
+		{
+			sem->P();
+		}
 
- private:
-  BitMap* bm;
-  Sem* semTab[MAX_SEMAPHORE];
+		void signal()
+		{
+			sem->V();
+		}
 
- public:
-  STable();
-  ~STable();
-  int create(char* name, int init);
-  int wait(char *name);
-  int signal(char *name);
+		char* GetName()
+		{
+			return name;
+		}
+		
+		
 
 };
-#endif
+
+/////////////////////////////////////////////////////////////
+
+class STable
+{
+	private:
+		BitMap* bm;
+		Sem* semTab[MAX_SEMAPHORE];
+	public:
+		STable();
+		~STable();
+		int Create(char* name,int init);
+		int Wait(char* name);
+		int Signal(char* name);
+		int FindFreeSlot(int id);
+};
+
+#endif 

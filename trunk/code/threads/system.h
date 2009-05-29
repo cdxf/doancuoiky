@@ -15,6 +15,10 @@
 #include "interrupt.h"
 #include "stats.h"
 #include "timer.h"
+#include "ptable.h"
+#include "stable.h"
+#include "synchcons.h"
+#include "bitmap.h"
 
 // Initialization and cleanup routines
 extern void Initialize(int argc, char **argv); 	// Initialization,
@@ -30,7 +34,10 @@ extern Statistics *stats;			// performance metrics
 extern Timer *timer;				// the hardware alarm clock
 
 extern PTable *pTab;				// quan ly thong tin cac tien trinh
-const int MaxFileLength = 31;
+extern BitMap *gPhysPageBitMap;			// quan ly cac trang vat ly
+extern Semaphore *addrSem;			// semaphore dung khi cap phat vung nho
+extern SynchConsole *gSynchConsole;
+extern STable *sTab;
 
 #ifdef USER_PROGRAM
 #include "machine.h"
