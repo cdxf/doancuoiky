@@ -1,0 +1,1 @@
+chúng ta là siêu nhân
